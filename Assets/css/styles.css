@@ -1,0 +1,27 @@
+  /* Hide the scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Optional: Make cursor indicate dragging */
+  #categories {
+    cursor: grab;
+    user-select: none;
+  }
+  #categories.dragging {
+    cursor: grabbing;
+  }
+  #categories {
+    cursor: grab;
+    scroll-behavior: smooth;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  #categories.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto; /* important: avoid smooth delay during drag */
+  }

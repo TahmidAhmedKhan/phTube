@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PH Tube</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      sizes="32x32"
+      href="Assets/image/Icon.png"
+    />
+    <!-- css sheet -->
+    <link rel="stylesheet" href="Assets/css/styles.css" />
+
+    <!-- daisyUI and Tailwind cdn link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="min-w-[370px]">
+    <!----------------------------------------------------------------------
+     header section
+    ------------------------------------------------------------------------>
+    <header class="header w-11/12 mx-auto">
+      <!----------------------
+          nav-bar section
+      ----------------------->
+      <nav
+        class="navbar flex justify-between items-center py-3 border-b-2 border-b-[#17171733] border-opacity-20"
+      >
+        <div class="logo w-[150px]">
+          <!-- logo -->
+          <a href="index.html" class="logoLink">
+            <img
+              src="Assets/image/Logo.png"
+              alt="PH-Tube-LOGO"
+              class="w-full"
+            />
+          </a>
+        </div>
+        <div class="searchBar">
+          <!-- searchBar -->
+          <label class="input">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input type="search" required placeholder="Search" />
+          </label>
+        </div>
+        <div class="sortBtn">
+          <button class="btn" type="button">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M4 6h16"></path>
+                <path d="M4 12h16"></path>
+                <path d="M4 18h16"></path>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <!-- sortBTN -->
+      </nav>
+
+      <!----------------------
+          category section
+      ----------------------->
+      <div id="categoriesContainer">
+        <div
+          id="categories"
+          class="categories flex justify-center items-center gap-4 py-3 border-b-2 border-b-[#17171733] border-opacity-20 w-full overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar"
+        >
+          <!-- injection of categories name come hare -->
+        </div>
+      </div>
+    </header>
+    <!----------------------------------------------------------------------
+     main section
+    ------------------------------------------------------------------------>
+    <main>
+      <section
+        id="videoContiner"
+        class="videoContiner w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-10"
+      ></section>
+    </main>
+    <footer>
+      <!-- <button class="btn btn-primary bg-center flex justify-center items-center " onclick="loadVideosByCategories(1001)">
+        Load Videos
+      </button> -->
+    </footer>
+    <script src="Assets/js/custom.js"></script>
+  </body>
+</html>

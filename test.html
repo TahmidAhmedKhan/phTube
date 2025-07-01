@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- daisyUI and Tailwind cdn link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      /* Optional: style buttons */
+      #leftArrow,
+      #rightArrow {
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      /* Hide the scrollbar */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Optional: Make cursor indicate dragging */
+      #categories {
+        cursor: grab;
+        user-select: none;
+      }
+      #categories.dragging {
+        cursor: grabbing;
+      }
+      #categories {
+        cursor: grab;
+        scroll-behavior: smooth;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      #categories.dragging {
+        cursor: grabbing;
+        scroll-behavior: auto; /* important: avoid smooth delay during drag */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="categoriesContainer" class="relative group">
+      <button
+        id="leftArrow"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow px-2 py-1 hidden group-hover:flex"
+      >
+        ◀
+      </button>
+
+      <div
+        id="categories"
+        class="categories flex justify-center items-center gap-4 py-3 border-b-2 border-b-[#17171733] border-opacity-20 w-full overflow-x-auto whitespace-nowrap scroll-smooth no-scrollbar"
+      >
+        <!-- Your category buttons will be injected here -->
+      </div>
+
+      <button
+        id="rightArrow"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow px-2 py-1 hidden group-hover:flex"
+      >
+        ▶
+      </button>
+    </div>
+
+    <script>
+      const categories = document.getElementById("categories");
+      const leftArrow = document.getElementById("leftArrow");
+      const rightArrow = document.getElementById("rightArrow");
+
+      const scrollAmount = 200; // pixels to scroll per click
+
+      leftArrow.addEventListener("click", () => {
+        categories.scrollBy({
+          left: -scrollAmount,
+          behavior: "smooth",
+        });
+      });
+
+      rightArrow.addEventListener("click", () => {
+        categories.scrollBy({
+          left: scrollAmount,
+          behavior: "smooth",
+        });
+      });
+
+      // Optional: scroll with mouse wheel
+      categories.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        categories.scrollLeft += e.deltaY;
+      });
+    </script>
+    <script>
+      const loadCategories = () => {
+        fetch("https://api.escuelajs.co/api/v1/categories")
+          .then((res) => res.json())
+          .then((data) => displayCategories(data))
+          .catch((error) => console.error("Error fetching categories:", error))
+          .finally(() => console.log("Fetch operation completed."));
+      };
+
+      const displayCategories = (categories) => {
+        categories.forEach((category) => {
+          console.log(category);
+          const categoriesContainer = document.getElementById("categories"); // Get the container element
+          const categoryDiv = document.createElement("button"); // Create a new div element for each category
+          categoryDiv.classList =
+            "btn category bg-[#25252526] text-[#252525B3] hover:bg-[#FF1F3D] hover:text-white"; // Add a class to the div
+          categoryDiv.innerHTML = `
+            <span>${category.name}</span> <!-- Display the category name -->
+            
+        `;
+          categoriesContainer.appendChild(categoryDiv); // Append the category div to the container
+        });
+      };
+      loadCategories();
+    </script>
+    <script>
+      const slider = document.getElementById("categories");
+
+      let isDragging = false;
+      let startX;
+      let scrollStart;
+
+      slider.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        slider.classList.add("dragging");
+        startX = e.clientX;
+        scrollStart = slider.scrollLeft;
+      });
+
+      slider.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        e.preventDefault(); // stop text/images from being selected
+        const dx = e.clientX - startX;
+        slider.scrollLeft = scrollStart - dx;
+      });
+
+      slider.addEventListener("mouseup", () => {
+        isDragging = false;
+        slider.classList.remove("dragging");
+      });
+
+      slider.addEventListener("mouseleave", () => {
+        isDragging = false;
+        slider.classList.remove("dragging");
+      });
+    </script>
+
+    <div class="videocard flex flex-col gap-2">
+      <div id="thumbnail"><img src="Assets/image/Rectangle 1.png" alt="video Thumbnail" /></div>
+      <div id="details flex gap-2">
+        <div class="channelProPic w-10 h-10"><img src="Assets/image/Ellipse 1.png" alt="channel ProPic" /></div>
+        <div class="otherDetails flex flex-col gap-2">
+          <div class="title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis </div>
+          <div class="otherDetails">
+            <div class="channelName">lorem ipsum</div>
+            <div class="views">223k views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="videocard flex flex-col gap-2 w-72">
+      <div class="thumbnail relative flex">
+        <img src="Assets/image/Rectangle 1.png" alt="Video Thumbnail" class="rounded-lg w-full h-auto" />
+        <div class="langth absolute right-2 bottom-1 text-white bg-black px-1 text-sm rounded-lg flex justify-center items-center"> 3hrs 56 min ago</div>
+      </div>
+      <div class="details flex gap-2">
+        <div class="channelProPic w-10 h-10 flex-shrink-0">
+          <img src="Assets/image/Ellipse 1.png" alt="Channel Profile Picture" class="rounded-full w-full h-full object-cover" />
+        </div>
+        <div class="info flex flex-col">
+          <div class="title font-semibold text-sm leading-tight">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis.</div>
+          <div class="subinfo text-gray-500 text-xs flex flex-col">
+            <div class="channelName  flex justify-start items-center gap-px capitalize"> <span>lorem ipsum </span><span class="verifyIcon flex justify-center items-center"><img src="Assets/image/verify-icon.png" alt="verify-Icon" class="w-8/12 h-8/12 object-cover"></span></div>
+            <div class="views">223k views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>
+  11
+  : 
+  authors
+  : 
+  Array(1)
+  0
+  : 
+  {profile_picture: 'https://i.ibb.co/jh1q2F3/shopia.jpg', profile_name: 'Sophia Williams', verified: false}
+  length
+  : 
+  1
+  [[Prototype]]
+  : 
+  Array(0)
+  category_id
+  : 
+  "1001"
+description
+: 
+"'Enchanted Harmonies' by Sophia Williams enchants listeners with its delicate, soothing sounds and melodic complexity. Garnering 7.6K views, this piece is perfect for those seeking an immersive musical experience that blends elegance with emotion, offering a unique soundscape that resonates deeply with its audience."
+others
+: 
+{views: '7.6K', posted_date: '16450'}
+thumbnail
+: 
+"https://i.ibb.co/hdtZYbB/enchnting.jpg"
+title
+: 
+"Enchanted Harmonies"
+video_id
+: 
+"aaal"
+[[Prototype]]
+: 
+Object
+length
+: 
+12
+[[Prototype]]
+: 
+Array(0)
