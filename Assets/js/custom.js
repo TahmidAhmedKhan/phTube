@@ -1,5 +1,6 @@
 console.log("Custom JS file loaded successfully!");
 
+// give human readable format for posted date
 function formatPostedDate(secondsAgo) {
   // Define time constants in seconds
   const minute = 60;
@@ -34,6 +35,27 @@ function formatPostedDate(secondsAgo) {
   }
 }
 
+const search = () => {
+  const searchInput = document.getElementById("searchBar");
+
+  let debounceTimer;
+
+  searchInput.addEventListener("keyup", () => {
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      const searchValue = searchInput.value.trim();
+
+      if (searchValue) {
+        loadVideosByTitleQuery(searchValue);
+      } else {
+        loadVideos();
+      }
+    }, 300); // 300ms delay
+  });
+};
+
+// showNoVideosMessage function to display a message when no videos are found
 const showNoVideosMessage = () => {
   const container = document.getElementById("videoContainer");
   container.innerHTML = "";
@@ -246,7 +268,7 @@ const displayCategories = (categories) => {
   }
 };
 
-// Fetch and display videos from API
+// Fetch and display videos from API by category ID
 const loadVideosByCategories = async (cat_id) => {
   try {
     const response = await fetch(
@@ -258,6 +280,21 @@ const loadVideosByCategories = async (cat_id) => {
     console.error("Error fetching videos:", error);
   } finally {
     console.log("videos Fetch operation By Categories completed.");
+  }
+};
+
+// Fetch and display videos from API by search input
+const loadVideosByTitleQuery  = async (searchInput) => {  
+  try {
+    const response = await fetch(
+      `https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchInput}`
+    );
+    const result = await response.json();
+    displayVideos(result.videos); // Call the function to display videos
+  } catch (error) {
+    console.error("Error fetching videos:", error);
+  } finally {
+    console.log("videos Fetch operation completed.");
   }
 };
 
@@ -276,6 +313,7 @@ const loadVideos = async () => {
   }
 };
 
+// display videos in the container
 const displayVideos = (videos) => {
   console.log("Displaying videos:", videos);
   if (Array.isArray(videos) && videos.length > 0) {
@@ -359,4 +397,5 @@ window.addEventListener("DOMContentLoaded", () => {
   loadCategories();
   enableHorizontalScrolling();
   loadVideos();
+  search();
 });
