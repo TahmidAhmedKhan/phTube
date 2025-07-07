@@ -105,8 +105,36 @@
      main section
     ------------------------------------------------------------------------>
     <main id="main">
-      <section id="videoContainer"></section>
+      <section id="videoContainer">
+        <!-- video container get pushed hare -->
+      </section>
       <!-- class="videoContainer w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-10" -->
+
+      <section id="videoDetailsContainer" class="">
+        <!-- Open the modal using ID.showModal() method -->
+        <button class="btn hidden" onclick="videoDetailsModal.showModal()">
+          open modal
+        </button>
+
+        <dialog
+          id="videoDetailsModal"
+          class="modal modal-bottom sm:modal-middle"
+        >
+          <div class="modal-box mdw-11/12 md:max-w-5xl">
+            <h3 class="text-lg font-bold">Video Details</h3>
+            <p class="py-2">Press ESC key or click the button below to close</p>
+            <div id="videoDetailsContent" class="videoDetailsContent">
+              <!-- Video details will be injected here -->
+            </div>
+            <div class="modal-action">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </section>
     </main>
 
     <!----------------------------------------------------------------------

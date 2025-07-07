@@ -95,6 +95,85 @@ const enableHorizontalScrolling = () => {
   });
 };
 
+// Function to load details of a specific video
+const loadDatilesOfVideos = async (videoId) => {
+  console.log("Loading details for video ID:", videoId);
+  const videoUrl = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+  // Fetch video details from API
+  try {
+    const response = await fetch(videoUrl);
+    const result = await response.json();
+    showVideoDetails(result.video); // Call the function to show video details
+  } catch (error) {
+    console.error("Error fetching videos:", error);
+  } finally {
+    console.log("videos Fetch operation By Categories completed.");
+  }
+};
+
+// Create a modal to display video details
+const showVideoDetails = (video) => {
+  console.log("Showing video details:", video);
+
+  const videoDetailsContent = document.getElementById("videoDetailsContent");
+  videoDetailsContent.innerHTML = ""; // Clear previous content
+  videoDetailsContent.className = ""; // Reset class
+  videoDetailsContent.innerHTML = `    
+    <div class="videocard flex flex-col gap-2 bg-white overflow-hidden">
+      <div
+        class="thumbnail relative flex w-full h-90 overflow-hidden content-center justify-center items-center"
+      >
+        <img
+          src="${video.thumbnail}"
+          alt="${video.title}"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <div id="videoDatile">
+        <div id="videoTitle" class="text-2xl font-semibold ">
+          ${video.title}
+        </div>
+
+        <div class="autherDetails flex gap-2 justify-start items-center py-4">
+          <div class="channelProPic w-20 h-20 flex-shrink-0">
+            <img
+              src="${video.authors[0]?.profile_picture || "fallback.jpg"}"
+              alt="${video.authors[0]?.profile_name || "Unknown"}"
+              class="rounded-3xl w-full h-full object-cover"
+            />
+          </div>
+          <div class="info flex flex-col">
+            <div class="title font-semibold text-xl leading-normal">
+              ${video.authors[0]?.profile_name || "Unknown"}
+            </div>
+            <div class="title font-normal text-lg leading-normal">
+              ${video.others?.views || "20k"} subscribers
+            </div>
+          </div>
+        </div>
+        <div class="descriptionContainer bg-slate-100 p-2 rounded-lg">
+          <div class="flex gap-4 mb-2 text-blue-500">
+            <div>${video.others?.views || "20k"}</div>
+            <div>${
+            video.others?.posted_date
+              ? formatPostedDate(video.others.posted_date)
+              : "Just Now"
+            }
+            </div>
+          </div>
+          <div id="description" class="">
+            ${video.description || "No description available."}
+          </div>            
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Create a modal to display video details
+  videoDetailsModal.showModal();
+};
+
 // Fetch and display categories from API
 const loadCategories = async () => {
   try {
@@ -198,6 +277,7 @@ const loadVideos = async () => {
 };
 
 const displayVideos = (videos) => {
+  console.log("Displaying videos:", videos);
   if (Array.isArray(videos) && videos.length > 0) {
     const container = document.getElementById("videoContainer");
     container.innerHTML = ""; // Clear previous content
@@ -218,39 +298,47 @@ const displayVideos = (videos) => {
       const videoDiv = document.createElement("div");
       videoDiv.className =
         "videocard flex flex-col gap-2 bg-white rounded-lg overflow-hidden";
+      videoDiv.addEventListener("dblclick", () => {
+        loadDatilesOfVideos(video.video_id);
+      });
 
       videoDiv.innerHTML = `
       <div class="thumbnail relative flex w-full h-40 overflow-hidden">
-        <img src="${video.thumbnail}" alt="${
-        video.title
-      }" class="w-full h-full object-cover" />
-    <div class="postedDate absolute right-2 bottom-1 text-white bg-black px-2 text-center text-xs rounded-lg flex justify-center items-center">
-      ${
-        video.others?.posted_date
-          ? formatPostedDate(video.others.posted_date)
-          : "Just Now"
-      }
-    </div>
+        <img src="${video.thumbnail}" 
+            alt="${video.title}" 
+            class="w-full h-full object-cover" />
+        <div class="postedDate absolute right-2 bottom-1 text-white bg-black px-2 text-center text-xs rounded-lg flex justify-center items-center">
+          ${
+            video.others?.posted_date
+              ? formatPostedDate(video.others.posted_date)
+              : "Just Now"
+          }
+        </div>
       </div>
       <div class="details flex gap-2 p-2">
         <div class="channelProPic w-10 h-10 flex-shrink-0">
-          <img src="${
-            video.authors[0]?.profile_picture || "fallback.jpg"
-          }" alt="Channel Profile Picture" class="rounded-full w-full h-full object-cover" />
+          <img src="${video.authors[0]?.profile_picture || "fallback.jpg"}"
+           alt="Channel Profile Picture" 
+           class="rounded-full w-full h-full object-cover" />
         </div>
         <div class="info flex flex-col">
-          <div class="title font-semibold text-sm leading-tight">${
-            video.title
-          }</div>
+          <div class="title font-semibold text-sm leading-tight">
+            ${video.title}
+          </div>
           <div class="subinfo text-gray-500 text-xs flex flex-col">
-              <div class="channelName flex justify-start items-center gap-px capitalize"><span>${
-                video.authors[0]?.profile_name || "Unknown"
-              }</span>${
-        video.authors[0]?.verified
-          ? `<span class="verifyIcon flex justify-center items-center"><img src="Assets/image/verify-icon.png" alt="verify-Icon" class="w-8/12 h-8/12 object-cover"></span>`
-          : ""
-      }</div>
-              <div class="views">${video.others?.views || "0"} views</div>
+            <div class="channelName flex justify-start items-center gap-px capitalize">
+              <span>
+                ${video.authors[0]?.profile_name || "Unknown"}
+              </span>
+                ${
+                  video.authors[0]?.verified
+                    ? `<span class="verifyIcon flex justify-center items-center">
+                    <img src="Assets/image/verify-icon.png" alt="verify-Icon" class="w-8/12 h-8/12 object-cover">
+                    </span>`
+                    : ""
+                }
+            </div>
+            <div class="views">${video.others?.views || "0"} views</div>
           </div>
         </div>
       </div>

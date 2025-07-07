@@ -215,43 +215,212 @@
                   alt="verify-Icon"
                   class="w-8/12 h-8/12 object-cover"
               /></span>
-            </div> 
+            </div>
             <div class="views">223k views</div>
           </div>
         </div>
       </div>
     </div>
 
-
-
-
-
-
     <div class="flex justify-center items-center gap-4 w-full h-[100vh]">
-      <div class="flex flex-col items-center justify-center gap-4 w-[400px] ">
-        <div class="w-[200px] h-[200]"><img class="w-full object-fit" src="Assets/image/Icon.png" alt="Icon of no videos" /></div>
-        <div class="text-center flex justify-center items-center flex-col gap-4">
+      <div class="flex flex-col items-center justify-center gap-4 w-[400px]">
+        <div class="w-[200px] h-[200]">
+          <img
+            class="w-full object-fit"
+            src="Assets/image/Icon.png"
+            alt="Icon of no videos"
+          />
+        </div>
+        <div
+          class="text-center flex justify-center items-center flex-col gap-4"
+        >
           <h1 class="text-3xl font-bold">No Videos Found</h1>
-          <p class="text-gray-500 text-xl">Please try a different search term.</p>
+          <p class="text-gray-500 text-xl">
+            Please try a different search term.
+          </p>
         </div>
       </div>
     </div>
 
+    <div onclick="loadVideos()"></div>
+
+    <div class="thumbnail relative flex w-full h-40 overflow-hidden">
+      <img
+        src="${video.thumbnail}"
+        alt="${video.title}"
+        class="w-full h-full object-cover"
+      />
+      <div
+        class="postedDate absolute right-2 bottom-1 text-white bg-black px-2 text-center text-xs rounded-lg flex justify-center items-center"
+      >
+        ${ video.others?.posted_date ?
+        formatPostedDate(video.others.posted_date) : "Just Now" }
+      </div>
+    </div>
+    <div class="details flex gap-2 p-2">
+      <div class="channelProPic w-10 h-10 flex-shrink-0">
+        <img src="${ video.authors[0]?.profile_picture || "fallback.jpg" }"
+        alt="Channel Profile Picture" class="rounded-full w-full h-full
+        object-cover" />
+      </div>
+      <div class="info flex flex-col">
+        <div class="title font-semibold text-sm leading-tight">
+          ${ video.title }
+        </div>
+        <div class="subinfo text-gray-500 text-xs flex flex-col">
+          <div
+            class="channelName flex justify-start items-center gap-px capitalize"
+          >
+            <span>${ video.authors[0]?.profile_name || "Unknown" }</span>${
+            video.authors[0]?.verified ? `<span
+              class="verifyIcon flex justify-center items-center"
+              ><img
+                src="Assets/image/verify-icon.png"
+                alt="verify-Icon"
+                class="w-8/12 h-8/12 object-cover" /></span
+            >` : "" }
+          </div>
+          <div class="views">${video.others?.views || "0"} views</div>
+        </div>
+      </div>
+    </div>
+
+    <br /><br /><br /><br />
+    <div class="videocard flex flex-col gap-2 bg-white overflow-hidden">
+      <div
+        class="thumbnail relative flex w-full h-80 overflow-hidden content-center justify-center items-center px-2"
+      >
+        <img
+          src="https://i.ibb.co/L1b6xSq/shape.jpg"
+          alt="Shape of You"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <div id="videoDatile">
+        <div id="videoTitle" class="text-2xl font-semibold p-2">
+          Shape of You
+        </div>
+
+        <div class="autherDetails flex gap-2 p-2 justify-start items-center">
+          <div class="channelProPic w-20 h-20 flex-shrink-0">
+            <img
+              src="https://i.ibb.co/D9wWRM6/olivia.jpg"
+              alt="Channel Profile Picture"
+              class="rounded-3xl w-full h-full object-cover"
+            />
+          </div>
+          <div class="info flex flex-col">
+            <div class="title font-semibold text-xl leading-normal">
+              ShapeofYou
+            </div>
+            <div class="title font-normal text-lg leading-normal">
+              20k subscribers
+            </div>
+          </div>
+        </div>
+        <div class="descriptionContainer p-2 bg-slate-100">
+          <div class="flex gap-4">
+            <div>123439 views</div>
+            <div>20 yaar ago</div>
+          </div>
+          <div id="descriptionContainer" class="relative">
+            <div
+              id="description"
+              class="line-clamp-1 transition-all duration-300 ease-in-out overflow-hidden"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Perspiciatis, voluptatum. Lorem ipsum dolor sit amet consectetur.
+            </div>
+            <button
+              id="toggleDescription"
+              class="text-blue-600 mt-2 font-medium hover:underline"
+            >
+              Read more
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br /><br /><br /><br />
 
 
+    
+    <p id="short-text">
+      Lorem ipsum dolor sit amet...
+      <span id="dots">...</span>
+      <span id="more" style="display: none">
+        consectetur adipisicing elit. Perspiciatis!
+      </span>
+    </p>
+    <button onclick="toggleReadMore()">Read more</button>
 
-<div onclick="loadVideos()"></div>
+    <script>
+      function toggleReadMore() {
+        const dots = document.getElementById("dots");
+        const moreText = document.getElementById("more");
+        const button = event.target;
 
+        if (dots.style.display === "none") {
+          dots.style.display = "inline";
+          moreText.style.display = "none";
+          button.textContent = "Read more";
+        } else {
+          dots.style.display = "none";
+          moreText.style.display = "inline";
+          button.textContent = "Read less";
+        }
+      }
+    </script>
 
+    <!-- Open the modal using ID.showModal() method -->
+    <button class="btn" onclick="my_modal_5.showModal()">open modal</button>
+    <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">Hello!</h3>
+        <p class="py-4">Press ESC key or click the button below to close</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Close</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <br /><br /><br /><br /><br /><br />
+
+    <div class="p-2 bg-slate-100 text-base text-gray-800">
+      <div class="flex gap-4 mb-1">
+        <div>123439 views</div>
+        <div>20 years ago</div>
+      </div>
+
+      <details class="group">
+        <summary
+          class="text-blue-600 cursor-pointer font-medium hover:underline"
+        >
+          Read more
+        </summary>
+        <div class="mt-1">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis,
+          voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Quae, nemo. Accusantium voluptatem, atque unde deserunt praesentium
+          sint.
+        </div>
+      </details>
+    </div>
   </body>
 </html>
-11 : authors : Array(1) 0 : {profile_picture:
-'https://i.ibb.co/jh1q2F3/shopia.jpg', profile_name: 'Sophia Williams',
-verified: false} length : 1 [[Prototype]] : Array(0) category_id : "1001"
-description : "'Enchanted Harmonies' by Sophia Williams enchants listeners with
-its delicate, soothing sounds and melodic complexity. Garnering 7.6K views, this
-piece is perfect for those seeking an immersive musical experience that blends
-elegance with emotion, offering a unique soundscape that resonates deeply with
-its audience." others : {views: '7.6K', posted_date: '16450'} thumbnail :
-"https://i.ibb.co/hdtZYbB/enchnting.jpg" title : "Enchanted Harmonies" video_id
-: "aaal" [[Prototype]] : Object length : 12 [[Prototype]] : Array(0)
